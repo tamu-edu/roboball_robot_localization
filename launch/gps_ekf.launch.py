@@ -1,3 +1,4 @@
+# Copyright 2018 Open Source Robotics Foundation, Inc.
 # Copyright 2019 Samsung Research America
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +27,10 @@ def generate_launch_description():
     return LaunchDescription([
         launch_ros.actions.Node(
             package='robot_localization',
-            executable='navsat_transform_node',
-            name='navsat_transform_node',
+            executable='ekf_node',
+            name='gps_ekf_filter_node',
             output='screen',
-            parameters=[os.path.join(get_package_share_directory("robot_localization"), 'params', 'navsat_transform.yaml'),{'use_sim_time': False}],
+            parameters=[os.path.join(get_package_share_directory("robot_localization"), 'params', 'gps_ekf.yaml'),{'use_sim_time': False}],
+            remappings=[('odometry/filtered', 'odometry/global')]
            ),
 ])
