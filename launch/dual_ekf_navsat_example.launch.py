@@ -39,7 +39,7 @@ def generate_launch_description():
             executable='ekf_node', 
             name='ekf_filter_node_odom',
 	        output='screen',
-            parameters=[parameters_file_path],
+            parameters=[parameters_file_path, {'use_sim_time': False}],
             remappings=[('odometry/filtered', 'odometry/local')]           
            ),
     launch_ros.actions.Node(
@@ -47,7 +47,7 @@ def generate_launch_description():
             executable='ekf_node', 
             name='ekf_filter_node_map',
 	        output='screen',
-            parameters=[parameters_file_path],
+            parameters=[parameters_file_path, {'use_sim_time': False}],
             remappings=[('odometry/filtered', 'odometry/global')]
            ),           
     launch_ros.actions.Node(
@@ -55,12 +55,10 @@ def generate_launch_description():
             executable='navsat_transform_node', 
             name='navsat_transform',
 	        output='screen',
-            parameters=[parameters_file_path],
-            remappings=[('imu/data', 'imu/data'),
-                        ('gps/fix', 'gps/fix'), 
-                        ('gps/filtered', 'gps/filtered'),
-                        ('odometry/gps', 'odometry/gps'),
-                        ('odometry/filtered', 'odometry/global')]           
+            parameters=[parameters_file_path, {'use_sim_time': False}],
+            remappings=[('odometry/filtered', 'odometry/global'),
+                        ('imu', '/processed/magnetometer'),
+                        ('gps/fix','fix2')]           
 
            )           
 ])
