@@ -18,11 +18,11 @@ ekf_filter_node_odom:
 
 # x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az
 
-    odom0: /processed_odom
+    odom0: /processed/odom
     odom0_config: [false,  false,  false,
                   false, false, false,
                   true, true, false,
-                  false, false, true,
+                  false, false, false,
                   false, false, false]
     odom0_queue_size: 10
     odom0_nodelay: true
@@ -33,13 +33,27 @@ ekf_filter_node_odom:
     imu0_config: [false, false, false,
                   false,  false,  false,
                   false, false, false,
-                  true,  true,  true,
-                  true,  true,  true]
+                  false,  false,  true,
+                  true,  true,  false]
     imu0_nodelay: false
     imu0_differential: false
-    imu0_relative: true
+    imu0_relative: false
     imu0_queue_size: 10
-    imu0_remove_gravitational_acceleration: true
+    imu0_remove_gravitational_acceleration: false
+
+    imu1: /processed/magnetometer
+    imu1_config: [false, false, false,
+                  false,  false,  true,
+                  false, false, false,
+                  false,  false,  false,
+                  false,  false,  false]
+    imu1_nodelay: true
+    imu1_differential: false
+    imu1_relative: false
+    imu1_queue_size: 10
+    imu1_remove_gravitational_acceleration: false
+    imu1_pose_rejection_threshold: 0.5 #accounts for magnetometer setback at certian angles
+
 
     use_control: false
 
@@ -89,17 +103,16 @@ ekf_filter_node_map:
     base_link_frame: base_link
     world_frame: map
 
-    # odom0: /processed_odom
-    # odom0_config: [false,  false,  false,
-    #               false, false, false,
-    #               true, true, false,
-    #               false, false, true,
-    #               false, false, false]
-    # odom0_queue_size: 10
-    # odom0_nodelay: true
-    # odom0_differential: false
-    # odom0_relative: false
-
+    odom0: /odometry/global
+    odom0_config: [true,  true ,  false,
+                  false, false, false,
+                  true, true, false,
+                  false, false, false,
+                  false, false, false]
+    odom0_queue_size: 10
+    odom0_nodelay: true
+    odom0_differential: false
+    odom0_relative: false
 
     imu0: /processed/magnetometer
     imu0_config: [false, false, false,
@@ -107,11 +120,12 @@ ekf_filter_node_map:
                   false, false, false,
                   false,  false,  false,
                   false,  false,  false]
-    imu0_nodelay: false
+    imu0_nodelay: true
     imu0_differential: false
     imu0_relative: false
     imu0_queue_size: 10
     imu0_remove_gravitational_acceleration: false
+    imu0_pose_rejection_threshold: 0.5 #accounts for magnetometer setback at certian angles
 
     odom1: /odometry/gps
     odom1_config: [true,  true,  false,
@@ -124,17 +138,28 @@ ekf_filter_node_map:
     odom1_differential: false
     odom1_relative: false
 
-    # imu1: /processed/imu
-    # imu1_config: [false, false, false,
-    #               false,  false,  false,
-    #               false, false, false,
-    #               true,  true,  true,
-    #               true,  true,  true]
-    # imu1_nodelay: false
-    # imu1_differential: false
-    # imu1_relative: false
-    # imu1_queue_size: 10
-    # imu1_remove_gravitational_acceleration: true
+    imu1: /processed/imu
+    imu1_config: [false, false, false,
+                  false,  false,  false,
+                  false, false, false,
+                  true,  true,  true,
+                  true,  true,  true]
+    imu1_nodelay: false
+    imu1_differential: false
+    imu1_relative: true
+    imu1_queue_size: 10
+    imu1_remove_gravitational_acceleration: false
+
+    odom1: /processed/odom
+    odom1_config: [false,  false,  false,
+                  false, false, false,
+                  true, true, false,
+                  false, false, false,
+                  false, false, false]
+    odom1_queue_size: 10
+    odom1_nodelay: true
+    odom1_differential: false
+    odom1_relative: false
 
     use_control: false
 
@@ -172,13 +197,13 @@ ekf_filter_node_map:
 
 navsat_transform:
   ros__parameters:
-    frequency: 50.0
-    delay: 3.0
+    frequency: 10.0
+    delay: 10.0
     magnetic_declination_radians: 0.04276057 #in texas
-    yaw_offset: 1.570796327
+    yaw_offset: 1.88
     zero_altitude: true
     broadcast_cartestian_transform: true
     publish_filtered_gps: true
-    use_odometry_yaw: false
+    use_odometry_yaw: true
     wait_for_datum: false
 
