@@ -177,7 +177,7 @@ NavSatTransform::NavSatTransform(const rclcpp::NodeOptions & options)
       &NavSatTransform::odomCallback, this, _1), subscriber_options);
 
   gps_sub_ = this->create_subscription<sensor_msgs::msg::NavSatFix>(
-    "fix2", custom_qos, std::bind(&NavSatTransform::gpsFixCallback, this, _1),
+    "fix", custom_qos, std::bind(&NavSatTransform::gpsFixCallback, this, _1),
     subscriber_options);
 
   if (!use_odometry_yaw_ && !use_manual_datum_) {
